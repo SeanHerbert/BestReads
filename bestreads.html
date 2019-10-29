@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<!-- CSC 337: Assignment BestReads -->
+<!-- Programmer: Sean Herbert -->
+<head>
+<link rel="stylesheet" type="text/css" href="bestreads.css" />
+
+<!--Google CDN Import of JQuery  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+<title>Best Reads</title>
+</head>
+<body onload="showAll()">
+
+<div id="header">
+<div>
+  <span>bestreads</span>
+</div>
+  <span id="back">home</span>
+</div>
+<div id="books">
+</div>
+
+
+<script>
+function showAll() {
+    let qs = "";
+	let xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", responseHandler);
+    xhr.open('GET',`bestreads.php/?${qs}`,true);
+    xhr.send();
+    
+    function responseHandler(){
+    	let bookFolders = JSON.parse(this.responseText);
+    	if(this.status==200){
+    		bhtml = "";
+    		for(var book of bookFolders){
+    			bhtml += "<img class = onebook src ="+book+"/cover.jpg>";
+    		}
+    		let books = document.getElementById("books");
+    		books.innerHTML = bhtml;
+    	}
+    	else{
+    		"There was an error reaching the server";
+    	}
+    	
+    }
+    
+    /*############################### Alternate Method Using JQuery #######################################  */
+	/* $.ajax({
+		type: "GET",
+		url:"/Bestreads/bestreads.php?",
+		contentType: "application/json"
+	})
+	.done(function(data){
+	alert(data);
+	var res = JSON.parse(data);
+	var bhtml = '';
+	for(var b of res){
+	 bhtml += "<img class = onebook src ="+b+"/cover.jpg>";
+	
+	}
+	 $("#books").html(bhtml);	
+	
+	}) */
+}
+</script>
+
+</body>
+</html>
